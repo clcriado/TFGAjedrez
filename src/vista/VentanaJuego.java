@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 
 import javax.swing.*;
 
@@ -18,7 +19,7 @@ import javax.swing.*;
 
 public class VentanaJuego {
     private final JFrame ventanaJuego;
-    private final Tablero tablero;
+    private Tablero tablero;
 
     public VentanaJuego(String nombreNegro, String nombreBlanco) {
 
@@ -36,12 +37,11 @@ public class VentanaJuego {
         panelDatosIzquierda.setSize(panelDatosIzquierda.getPreferredSize());
         ventanaJuego.add(panelDatosIzquierda, BorderLayout.WEST);
 
-        JPanel panelDatosDerecha = panelDatosDerecha(nombreNegro);
+        JPanel panelDatosDerecha = panelDatosDerecha(nombreBlanco);
         panelDatosDerecha.setSize(panelDatosDerecha.getPreferredSize());
         ventanaJuego.add(panelDatosDerecha, BorderLayout.EAST);
 
-
-        this.tablero = new Tablero(this);
+        tablero = new Tablero();
 
         ventanaJuego.add(tablero, BorderLayout.CENTER);
         ventanaJuego.add(botones(), BorderLayout.SOUTH);
@@ -123,7 +123,28 @@ public class VentanaJuego {
 
         buttonInstantanea.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                try (ObjectOutputStream oos = new ObjectOutputStream(
+                        new FileOutputStream("prueba", false)
+                )) {
+                    oos.writeObject(tablero);
+                } catch (IOException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
+            }
+        });
 
+        final JButton buttonCargarInstantanea = new JButton("Cargar Instantanea");
+
+        buttonCargarInstantanea.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try (ObjectInputStream ois = new ObjectInputStream(
+                        new FileInputStream("prueba")
+                )) {
+                    tablero = (Tablero) ois.readObject();
+                    tablero.repaint();
+                } catch (IOException | ClassNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
         });
 
@@ -146,6 +167,7 @@ public class VentanaJuego {
         });
 
         panelBotones.add(buttonInstantanea);
+        panelBotones.add(buttonCargarInstantanea);
         panelBotones.add(buttonNuevaPartida);
         panelBotones.add(buttonSalir);
 

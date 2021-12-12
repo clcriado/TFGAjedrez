@@ -5,7 +5,7 @@ import vista.Tablero;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
  * Clase Abstracta Pieza, se declara como se crea una Pieza, como pintarla, moverla y colocarla.
  */
 
-public abstract class Pieza {
+public abstract class Pieza implements Serializable {
 
     //Las piezas blancas siempre inician el primer movimiento de la partida.
     protected final boolean soyPiezaBlanca;
@@ -23,14 +23,13 @@ public abstract class Pieza {
     //Objeto Casilla de la casilla actual en la que se encuetra nuestra pieza.
     protected Casilla casillaActual;
 
-    public BufferedImage getImagen() {
-        return imagen;
-    }
+    transient protected BufferedImage imagen;
 
-    protected BufferedImage imagen;
+    protected String rutaImagen;
 
     public Pieza(boolean soyPiezaBlanca, String rutaImagen) {
         this.soyPiezaBlanca = soyPiezaBlanca;
+        this.rutaImagen = rutaImagen;
         this.establerImagen(rutaImagen);
     }
 
@@ -61,6 +60,12 @@ public abstract class Pieza {
         nuevaCasilla.colocarPieza(this);
     }
 
+    @Serial
+    private void readObject(ObjectInputStream  ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        this.establerImagen(this.rutaImagen);
+    }
+
     public void setCasillaActual(Casilla nuevaCasilla) {
         casillaActual = nuevaCasilla;
     }
@@ -71,5 +76,9 @@ public abstract class Pieza {
 
     public boolean esBlanca() {
         return soyPiezaBlanca;
+    }
+
+    public BufferedImage getImagen() {
+        return imagen;
     }
 }

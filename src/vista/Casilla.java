@@ -5,6 +5,7 @@ import utilidades.Imagenes;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import javax.swing.*;
 
@@ -13,7 +14,7 @@ import javax.swing.*;
  * poderse colocar piezas en ella y tambien quitarlas.
  */
 
-public class Casilla extends JComponent {
+public class Casilla extends JComponent implements Serializable {
 
 
     private final int colorInicial;

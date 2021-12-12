@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.Serializable;
 import java.util.List;
 import java.awt.Image;
 
@@ -20,13 +21,12 @@ import javax.swing.*;
  * se ha hecho click en el para arrastrar las piezas.
  */
 
-public class Tablero extends JPanel implements MouseListener, MouseMotionListener {
+public class Tablero extends JPanel implements MouseListener, MouseMotionListener, Serializable {
 
     public static final int LIMITE_VERTICAL = 8;
     public static final int LIMITE_HORIZONTAL = 8;
 
 	private final Casilla[][] casillas;
-    private final VentanaJuego g;
 
     private Pieza piezaActual;
     private List<Casilla> movimientosPosibles;
@@ -35,8 +35,7 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
 
     private int x, y;
     
-    public Tablero(VentanaJuego g) {
-        this.g = g;
+    public Tablero() {
         casillas = new Casilla[LIMITE_HORIZONTAL][LIMITE_VERTICAL];
 
         setLayout(new GridLayout(LIMITE_VERTICAL, LIMITE_HORIZONTAL, 0, 0));
@@ -74,8 +73,8 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void paintComponent(Graphics g) {
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < LIMITE_HORIZONTAL; x++) {
+            for (int y = 0; y < LIMITE_VERTICAL; y++) {
                 casillas[x][y].paintComponent(g);
             }
         }
