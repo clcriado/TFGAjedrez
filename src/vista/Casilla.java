@@ -1,6 +1,7 @@
 package vista;
 
 import piezas.Pieza;
+import piezas.Rey;
 import utilidades.Imagenes;
 
 import java.awt.Color;
@@ -50,9 +51,13 @@ public class Casilla extends JComponent implements Serializable {
         this.setBorder(BorderFactory.createEmptyBorder());
     }
 
-    public void colocarPieza(Pieza p) {
+    public boolean colocarPieza(Pieza p) {
+        boolean reyMuerto = this.pieza instanceof Rey;
+
         this.pieza = p;
         pieza.setCasillaActual(this);
+
+        return reyMuerto;
     }
 
     public void quitarPieza() {

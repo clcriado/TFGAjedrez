@@ -18,37 +18,45 @@ import javax.swing.*;
  */
 
 public class VentanaJuego {
-    private final JFrame ventanaJuego;
-    private Tablero tablero;
+
+    private static JFrame frame;
+
+    private final Tablero tablero;
+
+    private static String nombreBlanco;
+    private static String nombreNegro;
 
     public VentanaJuego(String nombreNegro, String nombreBlanco) {
 
-        ventanaJuego = new JFrame("Ajedrez");
-        ventanaJuego.setLocation(100, 100);
-        ventanaJuego.setLayout(new BorderLayout(100, 100));
+        VentanaJuego.nombreBlanco = nombreBlanco;
+        VentanaJuego.nombreNegro = nombreNegro;
+
+        frame = new JFrame("Ajedrez");
+        frame.setLocation(100, 100);
+        frame.setLayout(new BorderLayout(100, 100));
 
         // Ventana de Juego
 
         JPanel panelDatos = panelDatos();
         panelDatos.setSize(panelDatos.getPreferredSize());
-        ventanaJuego.add(panelDatos, BorderLayout.NORTH);
+        frame.add(panelDatos, BorderLayout.NORTH);
 
-        JPanel panelDatosIzquierda = panelDatosIzquierda(nombreNegro);
+        JPanel panelDatosIzquierda = panelDatosIzquierda(nombreBlanco);
         panelDatosIzquierda.setSize(panelDatosIzquierda.getPreferredSize());
-        ventanaJuego.add(panelDatosIzquierda, BorderLayout.WEST);
+        frame.add(panelDatosIzquierda, BorderLayout.WEST);
 
-        JPanel panelDatosDerecha = panelDatosDerecha(nombreBlanco);
+        JPanel panelDatosDerecha = panelDatosDerecha(nombreNegro);
         panelDatosDerecha.setSize(panelDatosDerecha.getPreferredSize());
-        ventanaJuego.add(panelDatosDerecha, BorderLayout.EAST);
+        frame.add(panelDatosDerecha, BorderLayout.EAST);
 
         tablero = new Tablero();
 
-        ventanaJuego.add(tablero, BorderLayout.CENTER);
-        ventanaJuego.add(botones(), BorderLayout.SOUTH);
+        frame.add(tablero, BorderLayout.CENTER);
+        frame.add(botones(), BorderLayout.SOUTH);
 
-        ventanaJuego.setMinimumSize(ventanaJuego.getPreferredSize());
-        ventanaJuego.setSize(ventanaJuego.getPreferredSize());
-        ventanaJuego.setResizable(false);
+        frame.setMinimumSize(frame.getPreferredSize());
+        frame.setSize(frame.getPreferredSize());
+        frame.setResizable(false);
 
         // Creamos jugadores y colocan piezas
         Jugador jugadorBlanco = new JugadorBlanco(this.tablero);
@@ -57,9 +65,65 @@ public class VentanaJuego {
         jugadorBlanco.colocarPiezas();
         jugadorNegro.colocarPiezas();
 
-        ventanaJuego.pack();
-        ventanaJuego.setVisible(true);
-        ventanaJuego.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+
+    public void guardarPartida() {
+        JFileChooser fileChooser = new JFileChooser();
+
+        int status = fileChooser.showSaveDialog(frame);
+
+        if (status != JFileChooser.APPROVE_OPTION) return;
+
+        String path = null;
+
+        try {
+            path = fileChooser.getSelectedFile().getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (path == null) return;
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(path, false)
+        )) {
+            oos.writeObject(tablero);
+        } catch (IOException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        }
+    }
+
+
+    public void cargarPartida() {
+        JFileChooser fileChooser = new JFileChooser();
+
+        int status = fileChooser.showOpenDialog(frame);
+
+        if (status != JFileChooser.APPROVE_OPTION) return;
+
+        String path = null;
+
+        try {
+            path = fileChooser.getSelectedFile().getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        if (path == null) return;
+
+        try (ObjectInputStream ois = new ObjectInputStream(
+                new FileInputStream(path)
+        )) {
+            tablero.loadTablero((Tablero) ois.readObject());
+        } catch (IOException | ClassNotFoundException fileNotFoundException) {
+            // O no hay fichero o el fichero no es un archivo de guardado correcto. Se muestra error
+
+            JOptionPane.showMessageDialog(frame,"El archivo que ha intentado cargar no es válido. Intente con otro.","Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Funcion para crear el Panel del juego Norte.
@@ -123,13 +187,7 @@ public class VentanaJuego {
 
         buttonInstantanea.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try (ObjectOutputStream oos = new ObjectOutputStream(
-                        new FileOutputStream("prueba", false)
-                )) {
-                    oos.writeObject(tablero);
-                } catch (IOException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+                guardarPartida();
             }
         });
 
@@ -137,14 +195,7 @@ public class VentanaJuego {
 
         buttonCargarInstantanea.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                try (ObjectInputStream ois = new ObjectInputStream(
-                        new FileInputStream("prueba")
-                )) {
-                    tablero = (Tablero) ois.readObject();
-                    tablero.repaint();
-                } catch (IOException | ClassNotFoundException fileNotFoundException) {
-                    fileNotFoundException.printStackTrace();
-                }
+                cargarPartida();
             }
         });
 
@@ -153,7 +204,7 @@ public class VentanaJuego {
         buttonNuevaPartida.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(new MenuPrincipal());
-                ventanaJuego.dispose();
+                frame.dispose();
             }
         });
 
@@ -161,8 +212,7 @@ public class VentanaJuego {
 
         buttonSalir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-                ventanaJuego.dispose();
+                frame.dispose();
             }
         });
 
@@ -176,8 +226,15 @@ public class VentanaJuego {
         return panelBotones;
     }
 
-    //TODO Implementar el Hake Mate
-    public void hakeMate() {
+    public static void jaqueMate(boolean gananBlancas) {
+        String mensaje = "Ha ganado el jugador: ";
 
+        mensaje+= gananBlancas ? nombreBlanco : nombreNegro;
+
+        JOptionPane.showMessageDialog(VentanaJuego.frame, mensaje, "Fin del Juego", JOptionPane.INFORMATION_MESSAGE);
+
+        // Como es un mensaje informativo, hagan lo que hagan con el panel, salimos al menu principal
+        SwingUtilities.invokeLater(new MenuPrincipal());
+        frame.dispose();
     }
 }

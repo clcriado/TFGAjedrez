@@ -25,10 +25,62 @@ public class Caballo extends Pieza {
         int x = casillaActual.getPosX();
         int y = casillaActual.getPosY();
 
-        Casilla casillaAComprobar;
+        // Arriba Derecha
+        int resultado = comprobarCasilla(x + 1, y - 2, tablero);
+
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x + 1, y - 2));
+        }
+
+        // Arriba Izquierda
+        resultado = comprobarCasilla(x - 1, y - 2, tablero);
+
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x - 1, y - 2));
+        }
+
+        // Derecha Arriba
+        resultado = comprobarCasilla(x + 2, y - 1, tablero);
+
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x + 2, y - 1));
+        }
+
+        // Izquierda Arriba
+        resultado = comprobarCasilla(x - 2, y - 1, tablero);
+
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x - 2, y - 1));
+        }
 
 
+        // Abajo Derecha
+        resultado = comprobarCasilla(x + 1, y + 2, tablero);
 
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x + 1, y + 2));
+        }
+
+        // Abajo Izquierda
+        resultado = comprobarCasilla(x - 1, y + 2, tablero);
+
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x - 1, y + 2));
+        }
+
+        // Derecha Abajo
+        resultado = comprobarCasilla(x + 2, y + 1, tablero);
+
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x + 2, y + 1));
+        }
+
+        // Izquierda Abajo
+        resultado = comprobarCasilla(x - 2, y + 1, tablero);
+
+        if (resultado == 1 || resultado == 0) {
+            movimientosPosibles.add(tablero.getCasilla(x - 2, y + 1));
+        }
 
         return movimientosPosibles;
     }

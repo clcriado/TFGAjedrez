@@ -54,10 +54,38 @@ public abstract class Pieza implements Serializable {
     }
 
     // Metodo con el cual poder mover la Pieza.
-    public void moverA(Casilla nuevaCasilla) {
+    public boolean moverA(Casilla nuevaCasilla) {
         casillaActual.quitarPieza();
 
-        nuevaCasilla.colocarPieza(this);
+        boolean reyMuerto = nuevaCasilla.colocarPieza(this);
+
+        return reyMuerto;
+    }
+
+    /**
+     * A partir de unas posiciones x e y, comprobamos si es una casilla a la que nos podemos mover
+     *
+     * Devolveremos un -1 si no nos podemos mover
+     *              un  1 si nos podemos mover y no hay piezas en la casilla
+     *              un  0 si nos podemos mover y lo que hay en la casilla es una pieza de color diferente
+     */
+    protected int comprobarCasilla(int x, int y, Tablero tablero) {
+        Casilla casillaComprobar = tablero.getCasilla(x, y);
+
+        //Si la casilla a comprobar es null, quiere decir que esta fuera de los limites del tablero, por ello no sirve.
+        if (casillaComprobar == null) return -1;
+
+        //Si la pieza esta en el tablero, comprobaremos la pieza en esa casilla.
+        Pieza piezaComprobar = casillaComprobar.getPieza();
+
+        //Si la pieza a comprobar es null, quiere decir que no hay pieza en dicha casilla, por ello nos
+        // podemos mover a casilla.
+        if (piezaComprobar == null) return 1;
+
+        //Si soy pieza blanca es diferente al otro color, puedo comer dicha pieza y moverme a esa casilla.
+        if (this.soyPiezaBlanca != piezaComprobar.esBlanca()) return 0;
+
+        return -1;
     }
 
     @Serial

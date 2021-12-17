@@ -26,7 +26,7 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
     public static final int LIMITE_VERTICAL = 8;
     public static final int LIMITE_HORIZONTAL = 8;
 
-	private final Casilla[][] casillas;
+	private Casilla[][] casillas;
 
     private Pieza piezaActual;
     private List<Casilla> movimientosPosibles;
@@ -65,6 +65,34 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
         this.setMaximumSize(new Dimension(400, 400));
         this.setMinimumSize(this.getPreferredSize());
         this.setSize(new Dimension(400, 400));
+    }
+
+    public void loadTablero(Tablero tablero) {
+
+        // Cargamos otra vez los estados
+        casillas = tablero.getCasillas();
+        turnoBlanco = tablero.isTurnoBlanco();
+
+        // Eliminamos del JPanel todos los componentes
+        this.removeAll();
+
+        // Los añadimos de nuevo, esta vez con las casillas actualizadas
+        for (int y = 0; y < LIMITE_VERTICAL; y++) {
+            for (int x = 0; x < LIMITE_HORIZONTAL; x++) {
+                this.add(casillas[x][y]);
+            }
+        }
+
+        // Pintamos de nuevo para que se muestre actualizado
+        this.repaint();
+    }
+
+    public Casilla[][] getCasillas() {
+        return casillas;
+    }
+
+    public boolean isTurnoBlanco() {
+        return turnoBlanco;
     }
 
     public void colocarPieza(Pieza pieza, int x, int y) {
@@ -124,7 +152,9 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
 
             if (movimientosPosibles.contains(casilla)) {
                 casilla.setDisplay(true);
-                piezaActual.moverA(casilla);
+                boolean reyMuerto = piezaActual.moverA(casilla);
+
+                if (reyMuerto) finDelJuego();
 
                 piezaActual = null;
                 turnoBlanco = !turnoBlanco;
@@ -138,6 +168,10 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
         }
 
         repaint();
+    }
+
+    private void finDelJuego() {
+        VentanaJuego.jaqueMate(piezaActual.esBlanca());
     }
 
     @Override
@@ -166,6 +200,12 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
     }
 
     public Casilla getCasilla(int x, int y) {
+        // Limite inferior
+        if (x < 0 || y < 0) return null;
+
+        // Limite superior
+        if (x >= Tablero.LIMITE_HORIZONTAL || y >= Tablero.LIMITE_VERTICAL) return null;
+
         return casillas[x][y];
     }
 

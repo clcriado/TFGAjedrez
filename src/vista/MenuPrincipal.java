@@ -2,12 +2,6 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Objects;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -38,6 +32,9 @@ public class MenuPrincipal implements Runnable {
 
         final JLabel labelTextoNegro = new JLabel("Nombre del Jugador Negro: ");
         final JTextField tfTextoNegro = new JTextField("Negro", 10);
+
+        //TODO anadir imagen
+        //panelNegro.add()
         panelNegro.add(labelTextoNegro);
         panelNegro.add(tfTextoNegro);
 

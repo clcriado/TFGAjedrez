@@ -10,7 +10,6 @@ import java.util.List;
 /**
  * Clase Torre, sirve para crear una Pieza de tipo Torre.
  */
-
 public class Torre extends Pieza {
 
     public Torre(boolean soyPiezaBlanca) {
@@ -24,72 +23,58 @@ public class Torre extends Pieza {
         int x = casillaActual.getPosX();
         int y = casillaActual.getPosY();
 
-        Casilla casillaAComprobar;
+        int resultado;
 
         // Movimiento horizontal
 
         for (int i = x + 1; i<Tablero.LIMITE_HORIZONTAL; i++){
-            casillaAComprobar = tablero.getCasilla(i, y);
-            if(casillaAComprobar.getPieza() != null) {
-
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(i, y, tablero);
+            if (resultado == -1) {
                 break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(i, y));
+                break;
+            } else {
+                movimientosPosibles.add(tablero.getCasilla(i, y));
             }
-
-            movimientosPosibles.add(casillaAComprobar);
         }
 
         for (int i = x - 1; i>=0; i--) {
-            casillaAComprobar = tablero.getCasilla(i, y);
-            if (casillaAComprobar.getPieza() != null) {
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(i, y, tablero);
+            if (resultado == -1) {
                 break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(i, y));
+                break;
+            } else {
+                movimientosPosibles.add(tablero.getCasilla(i, y));
             }
-
-            movimientosPosibles.add(casillaAComprobar);
         }
 
         // Movimiento vertical
 
         for (int i = y + 1; i<Tablero.LIMITE_VERTICAL; i++){
-            casillaAComprobar = tablero.getCasilla(x, i);
-            if(casillaAComprobar.getPieza() != null){
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(x, i, tablero);
+            if (resultado == -1) {
                 break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(x, i));
+                break;
+            } else {
+                movimientosPosibles.add(tablero.getCasilla(x, i));
             }
-
-            movimientosPosibles.add(casillaAComprobar);
         }
 
         for (int i = y - 1; i>=0; i--){
-            casillaAComprobar = tablero.getCasilla(x, i);
-
-            if(casillaAComprobar.getPieza() != null){
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(x, i, tablero);
+            if (resultado == -1) {
                 break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(x, i));
+                break;
+            } else {
+                movimientosPosibles.add(tablero.getCasilla(x, i));
             }
-
-            movimientosPosibles.add(casillaAComprobar);
         }
 
 

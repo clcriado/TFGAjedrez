@@ -25,7 +25,7 @@ public class Alfil extends Pieza {
         int x = casillaActual.getPosX();
         int y = casillaActual.getPosY();
 
-        Casilla casillaAComprobar;
+        int resultado;
 
         // Diagonal principal
 
@@ -33,18 +33,15 @@ public class Alfil extends Pieza {
         int yDiagonal = y + 1;
 
         while (xDiagonal < Tablero.LIMITE_HORIZONTAL && yDiagonal < Tablero.LIMITE_VERTICAL) {
-            casillaAComprobar = tablero.getCasilla(xDiagonal, yDiagonal);
-            if(casillaAComprobar.getPieza() != null){
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(xDiagonal, yDiagonal, tablero);
+            if (resultado == -1) {
+                break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
                 break;
             }
 
-            movimientosPosibles.add(casillaAComprobar);
+            movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
 
             xDiagonal++;
             yDiagonal++;
@@ -54,18 +51,15 @@ public class Alfil extends Pieza {
         yDiagonal = y - 1;
 
         while (xDiagonal >= 0 && yDiagonal >= 0) {
-            casillaAComprobar = tablero.getCasilla(xDiagonal, yDiagonal);
-            if(casillaAComprobar.getPieza() != null){
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(xDiagonal, yDiagonal, tablero);
+            if (resultado == -1) {
+                break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
                 break;
             }
 
-            movimientosPosibles.add(casillaAComprobar);
+            movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
 
             xDiagonal--;
             yDiagonal--;
@@ -79,18 +73,15 @@ public class Alfil extends Pieza {
         yDiagonal = y - 1;
 
         while (xDiagonal < Tablero.LIMITE_HORIZONTAL && yDiagonal >= 0) {
-            casillaAComprobar = tablero.getCasilla(xDiagonal, yDiagonal);
-            if(casillaAComprobar.getPieza() != null){
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(xDiagonal, yDiagonal, tablero);
+            if (resultado == -1) {
+                break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
                 break;
             }
 
-            movimientosPosibles.add(casillaAComprobar);
+            movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
 
             xDiagonal++;
             yDiagonal--;
@@ -100,18 +91,15 @@ public class Alfil extends Pieza {
         yDiagonal = y + 1;
 
         while (xDiagonal >= 0 && yDiagonal < Tablero.LIMITE_VERTICAL) {
-            casillaAComprobar = tablero.getCasilla(xDiagonal, yDiagonal);
-            if(casillaAComprobar.getPieza() != null){
-                // Comprobamos si la pieza que está en la casilla es de diferente color a la nuestra.
-                // Si lo es, podemos movernos a esa casilla, ya que se puede comer.
-                if (casillaAComprobar.getPieza().soyPiezaBlanca != soyPiezaBlanca) {
-                    movimientosPosibles.add(casillaAComprobar);
-                }
-
+            resultado = comprobarCasilla(xDiagonal, yDiagonal, tablero);
+            if (resultado == -1) {
+                break;
+            } else if (resultado == 0) {
+                movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
                 break;
             }
 
-            movimientosPosibles.add(casillaAComprobar);
+            movimientosPosibles.add(tablero.getCasilla(xDiagonal, yDiagonal));
 
             xDiagonal--;
             yDiagonal++;

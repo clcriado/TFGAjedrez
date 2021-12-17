@@ -42,37 +42,41 @@ public class Peon extends Pieza {
             }
         }
 
-        Pieza diagonalIzquierda = soyPiezaBlanca ? tablero.getCasilla(x - 1, y - 1).getPieza()
-                : tablero.getCasilla(x + 1, y + 1).getPieza();
+        //Dependiendo del color de la Pieza, la diagonal izquierda sera una casilla u otra.
+        Casilla diagonalIzquierda = soyPiezaBlanca ?
+                tablero.getCasilla(x - 1, y - 1) :
+                tablero.getCasilla(x + 1, y + 1);
 
-        Pieza diagonalDerecha = soyPiezaBlanca ? tablero.getCasilla(x + 1, y - 1).getPieza()
-                : tablero.getCasilla(x - 1, y + 1).getPieza();
+        //Dependiendo del color de la Pieza, la diagonal derecha sera una casilla u otra.
+        Casilla diagonalDerecha = soyPiezaBlanca ?
+                tablero.getCasilla(x + 1, y - 1) :
+                tablero.getCasilla(x - 1, y + 1);
 
 
-        if (soyPiezaBlanca) {
+        if (diagonalIzquierda != null) {
+            Pieza piezaDiagonalIzq = diagonalIzquierda.getPieza();
 
-            if (diagonalIzquierda != null && !diagonalIzquierda.soyPiezaBlanca)
-                 movimientosPosibles.add(diagonalIzquierda.getCasillaActual());
+            if (piezaDiagonalIzq != null && soyPiezaBlanca != piezaDiagonalIzq.esBlanca()) {
+                movimientosPosibles.add(diagonalIzquierda);
+            }
+        }
 
-            if(diagonalDerecha != null && !diagonalDerecha.soyPiezaBlanca)
-                movimientosPosibles.add(diagonalDerecha.getCasillaActual());
 
-        } else {
+        if (diagonalDerecha != null) {
+            Pieza piezaDiagonalDch = diagonalDerecha.getPieza();
 
-            if (diagonalIzquierda != null && diagonalIzquierda.soyPiezaBlanca)
-                movimientosPosibles.add(diagonalIzquierda.getCasillaActual());
-
-            if(diagonalDerecha != null && diagonalDerecha.soyPiezaBlanca)
-                movimientosPosibles.add(diagonalDerecha.getCasillaActual());
-
+            if (piezaDiagonalDch != null && soyPiezaBlanca != piezaDiagonalDch.esBlanca()) {
+                movimientosPosibles.add(diagonalDerecha);
+            }
         }
 
         return movimientosPosibles;
     }
 
     @Override
-    public void moverA(Casilla nuevaCasilla) {
-        super.moverA(nuevaCasilla);
+    public boolean moverA(Casilla nuevaCasilla) {
+        boolean reyMuerto = super.moverA(nuevaCasilla);
         primerTurno = false;
+        return reyMuerto;
     }
 }
