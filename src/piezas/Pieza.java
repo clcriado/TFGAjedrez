@@ -65,9 +65,9 @@ public abstract class Pieza implements Serializable {
     /**
      * A partir de unas posiciones x e y, comprobamos si es una casilla a la que nos podemos mover
      *
-     * Devolveremos un -1 si no nos podemos mover
-     *              un  1 si nos podemos mover y no hay piezas en la casilla
-     *              un  0 si nos podemos mover y lo que hay en la casilla es una pieza de color diferente
+     * Devolveremos un -1 si no nos podemos mover.
+     *              un  1 si nos podemos mover y no hay piezas en la casilla.
+     *              un  0 si nos podemos mover y lo que hay en la casilla es una pieza de color diferente.
      */
     protected int comprobarCasilla(int x, int y, Tablero tablero) {
         Casilla casillaComprobar = tablero.getCasilla(x, y);

@@ -3,16 +3,13 @@ package vista;
 import jugadores.Jugador;
 import jugadores.JugadorBlanco;
 import jugadores.JugadorNegro;
-import utilidades.Imagenes;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -39,7 +36,6 @@ public class VentanaJuego {
         frame.setLayout(new BorderLayout(100, 100));
 
         // Ventana de Juego
-
         JPanel panelDatos = panelDatos();
         panelDatos.setSize(panelDatos.getPreferredSize());
         frame.add(panelDatos, BorderLayout.NORTH);
@@ -73,6 +69,9 @@ public class VentanaJuego {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
+    /**
+     * Función guardarPartida, abre un elector de archivo, para obtener una ruta, para serializar el objeto tablero.
+     */
     public void guardarPartida() {
         JFileChooser fileChooser = new JFileChooser();
 
@@ -80,9 +79,11 @@ public class VentanaJuego {
 
         if (status != JFileChooser.APPROVE_OPTION) return;
 
+        //Ruta del archivo
         String path = null;
 
         try {
+            //La ruta equivaldrá al archivo seleccionado.
             path = fileChooser.getSelectedFile().getCanonicalPath();
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,6 +91,7 @@ public class VentanaJuego {
 
         if (path == null) return;
 
+        //Serializamos la ruta y escribimos el objeto tablero.
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new FileOutputStream(path, false)
         )) {
@@ -99,7 +101,9 @@ public class VentanaJuego {
         }
     }
 
-
+    /**
+     * Función cargarPartida, abre un elector de archivo, para obtener una ruta, para serializar el objeto tablero.
+     */
     public void cargarPartida() {
         JFileChooser fileChooser = new JFileChooser();
 
@@ -107,9 +111,11 @@ public class VentanaJuego {
 
         if (status != JFileChooser.APPROVE_OPTION) return;
 
+        //Ruta del archivo
         String path = null;
 
         try {
+            //La ruta equivaldrá al archivo seleccionado.
             path = fileChooser.getSelectedFile().getCanonicalPath();
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,12 +127,29 @@ public class VentanaJuego {
         try (ObjectInputStream ois = new ObjectInputStream(
                 new FileInputStream(path)
         )) {
-            tablero.loadTablero((Tablero) ois.readObject());
+            tablero.cargarTablero((Tablero) ois.readObject());
         } catch (IOException | ClassNotFoundException fileNotFoundException) {
             // O no hay fichero o el fichero no es un archivo de guardado correcto. Se muestra error
 
             JOptionPane.showMessageDialog(frame,"El archivo que ha intentado cargar no es válido. Intente con otro.","Error",JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    /**
+     *  Método JaqueMate, muestra un mensaje cuando la Pieza Rey ha muerto.
+     */
+    public static void jaqueMate(boolean gananBlancas) {
+        String mensaje = "Ha ganado el jugador: ";
+
+
+        //Dependiendo de si ganan las blancas o negras, se añadirá el nombre del Jugador Blanco o Negro.
+        mensaje+= gananBlancas ? nombreBlanco : nombreNegro;
+
+        JOptionPane.showMessageDialog(VentanaJuego.frame, mensaje, "Fin del Juego", JOptionPane.INFORMATION_MESSAGE);
+
+        // Como es un mensaje informativo, hagan lo que hagan con el panel, salimos al menu principal.
+        SwingUtilities.invokeLater(new MenuPrincipal());
+        frame.dispose();
     }
 
     // Funcion para crear el Panel del juego Norte.
@@ -225,17 +248,5 @@ public class VentanaJuego {
         panelBotones.setPreferredSize(panelBotones.getMinimumSize());
 
         return panelBotones;
-    }
-
-    public static void jaqueMate(boolean gananBlancas) {
-        String mensaje = "Ha ganado el jugador: ";
-
-        mensaje+= gananBlancas ? nombreBlanco : nombreNegro;
-
-        JOptionPane.showMessageDialog(VentanaJuego.frame, mensaje, "Fin del Juego", JOptionPane.INFORMATION_MESSAGE);
-
-        // Como es un mensaje informativo, hagan lo que hagan con el panel, salimos al menu principal
-        SwingUtilities.invokeLater(new MenuPrincipal());
-        frame.dispose();
     }
 }

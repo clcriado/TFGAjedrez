@@ -25,6 +25,7 @@ public class Peon extends Pieza {
         int x = casillaActual.getPosX();
         int y = casillaActual.getPosY();
 
+        //Si es Blanca o no, miramos hacia arriba o hacia abajo.
         int posicionFrontal = soyPiezaBlanca ? y - 1 : y + 1;
         int posicionMasDos = soyPiezaBlanca ? y - 2 : y + 2;
 

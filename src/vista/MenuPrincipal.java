@@ -11,13 +11,13 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
- * Clase MenuPrincipal, ventana inicial de la aplicacion, permite iniciar el juego o cerrarlo.
+ * Clase MenuPrincipal, ventana inicial de la aplicación, permite iniciar el juego o cerrarlo.
  */
 
 public class MenuPrincipal implements Runnable {
     public void run() {
         final JFrame ventana = new JFrame("Ajedrez");
-        // Set window properties
+        // Establecemos las propiedades de la ventana
         ventana.setLocation(300,100);
         ventana.setResizable(false);
         ventana.setSize(560, 540);
@@ -25,7 +25,7 @@ public class MenuPrincipal implements Runnable {
         Box boxComponentes = Box.createVerticalBox();
         ventana.add(boxComponentes);
         
-        // Titulo del Juego
+        // Título del Juego
         final JPanel panelTitulo = new JPanel();
         boxComponentes.add(panelTitulo);
 
@@ -90,9 +90,6 @@ public class MenuPrincipal implements Runnable {
         botones.add(Box.createHorizontalStrut(20));
         botones.add(salir);
         boxComponentes.add(botones);
-        
-        Component space = Box.createGlue();
-        boxComponentes.add(space);
 
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setVisible(true);

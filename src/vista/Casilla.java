@@ -17,7 +17,6 @@ import javax.swing.*;
 
 public class Casilla extends JComponent implements Serializable {
 
-
     private final int colorInicial;
 
     public void setColor(int color) {
@@ -36,14 +35,14 @@ public class Casilla extends JComponent implements Serializable {
 
     private Pieza pieza;
 
-    private boolean dispPiece;
+    private boolean piezaDisponible;
 
 
     public Casilla(int color, int posX, int posY) {
 
         this.color = color;
         this.colorInicial = color;
-        this.dispPiece = true;
+        this.piezaDisponible = true;
         this.posX = posX;
         this.posY = posY;
 
@@ -51,6 +50,10 @@ public class Casilla extends JComponent implements Serializable {
         this.setBorder(BorderFactory.createEmptyBorder());
     }
 
+    /**
+     *  Funcion colocarPieza, si al colocarla, la Pieza es una instancia de Rey, reyMuerto equivaldría a True, eso
+     *  quiere decir que ha muerto por ello la partida terminaría.
+     */
     public boolean colocarPieza(Pieza p) {
         boolean reyMuerto = this.pieza instanceof Rey;
 
@@ -60,6 +63,9 @@ public class Casilla extends JComponent implements Serializable {
         return reyMuerto;
     }
 
+    /**
+     *  Método quitarPieza, sirve para quitar una pieza de la Casilla estableciéndola a null.
+     */
     public void quitarPieza() {
         this.pieza = null;
     }
@@ -67,6 +73,7 @@ public class Casilla extends JComponent implements Serializable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // Dependiendo del Color, se pintará una casilla de ese color.
         if (this.color == Imagenes.COLOR_AMARILLO) {
             g.setColor(new Color(255, 230, 181));
         } else if (color == Imagenes.COLOR_MARRON) {
@@ -77,7 +84,8 @@ public class Casilla extends JComponent implements Serializable {
 
         g.fillRect(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 
-        if (pieza != null && dispPiece) {
+        //Si la pieza no equivale a null y la disponibilidad es True, podemos pintar las piezas.
+        if (pieza != null && piezaDisponible) {
             pieza.pintarse(g);
         }
     }
@@ -99,6 +107,6 @@ public class Casilla extends JComponent implements Serializable {
     }
 
     public void setDisplay(boolean v) {
-        this.dispPiece = v;
+        this.piezaDisponible = v;
     }
 }

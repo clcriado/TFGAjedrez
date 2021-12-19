@@ -18,7 +18,7 @@ import javax.swing.*;
 
 /**
  * Clase Tablero, define que es, como pintarlo, y controlar donde y cuando
- * se ha hecho click en el para arrastrar las piezas.
+ * se ha hecho clic en él para arrastrar las piezas.
  */
 
 public class Tablero extends JPanel implements MouseListener, MouseMotionListener, Serializable {
@@ -26,6 +26,7 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
     public static final int LIMITE_VERTICAL = 8;
     public static final int LIMITE_HORIZONTAL = 8;
 
+    //Array de casillas para simular el Tablero.
 	private Casilla[][] casillas;
 
     private Pieza piezaActual;
@@ -36,40 +37,47 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
     private int x, y;
     
     public Tablero() {
+        //Declaramos el Array Casillas.
         casillas = new Casilla[LIMITE_HORIZONTAL][LIMITE_VERTICAL];
-
-        setLayout(new GridLayout(LIMITE_VERTICAL, LIMITE_HORIZONTAL, 0, 0));
 
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
 
+        //Establecemos los parámetros de visualización de la Interfaz.
+        setLayout(new GridLayout(LIMITE_VERTICAL, LIMITE_HORIZONTAL, 0, 0));
+        this.setPreferredSize(new Dimension(400, 400));
+        this.setMaximumSize(new Dimension(400, 400));
+        this.setMinimumSize(this.getPreferredSize());
+        this.setSize(new Dimension(400, 400));
+
         int color;
+
+        //For anidado para crear el tablero con las Casillas, a través de los límites verticales y horizontales.
         for (int y = 0; y < LIMITE_VERTICAL; y++) {
             for (int x = 0; x < LIMITE_HORIZONTAL; x++) {
                 boolean xEsPar = x % 2 == 0;
                 boolean yEsPar = y % 2 == 0;
 
+                //Dependiendo si la posición es Par o no lo es, el color será amarillo o marron.
                 if ((xEsPar && yEsPar) || (!xEsPar && !yEsPar)) {
                     color = Imagenes.COLOR_AMARILLO;
                 } else {
                     color = Imagenes.COLOR_MARRON;
                 }
 
+                //Creamos la casilla con la Posición y el color correspondiente.
                 casillas[x][y] = new Casilla(color, x, y);
-
                 this.add(casillas[x][y]);
             }
         }
-
-        this.setPreferredSize(new Dimension(400, 400));
-        this.setMaximumSize(new Dimension(400, 400));
-        this.setMinimumSize(this.getPreferredSize());
-        this.setSize(new Dimension(400, 400));
     }
 
-    public void loadTablero(Tablero tablero) {
+    /**
+     * Método cargarTablero, nos permite vaciar y crear de nuevo el tablero con los datos actualizados.
+     */
+    public void cargarTablero(Tablero tablero) {
 
-        // Cargamos otra vez los estados
+        // Cargamos de nuevo los estados de las casillas y si el turno es del Equipo Blanco.
         casillas = tablero.getCasillas();
         turnoBlanco = tablero.isTurnoBlanco();
 
@@ -86,6 +94,28 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
         // Pintamos de nuevo para que se muestre actualizado
         this.repaint();
     }
+
+    /**
+     * Método finDelJuego, ejecuta un método estático de VentanaJuego, que muestra la ventana de fin del juego.
+     */
+    private void finDelJuego() {
+        VentanaJuego.jaqueMate(piezaActual.esBlanca());
+    }
+
+    /**
+     * Función getCasilla, devuelve una Casilla del Tablero, si equivale a 0 o menor será nulo, para evitar
+     * fallos por movimiento en Casillas inexistentes.
+     */
+    public Casilla getCasilla(int x, int y) {
+        // Limite inferior
+        if (x < 0 || y < 0) return null;
+
+        // Limite superior
+        if (x >= Tablero.LIMITE_HORIZONTAL || y >= Tablero.LIMITE_VERTICAL) return null;
+
+        return casillas[x][y];
+    }
+
 
     public Casilla[][] getCasillas() {
         return casillas;
@@ -122,8 +152,10 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
         x = e.getX();
         y = e.getY();
 
+        //Cuando presionemos, con la X e Y recogemos un Objeto Casilla.
         Casilla casilla = (Casilla) this.getComponentAt(new Point(e.getX(), e.getY()));
 
+        //Si la casilla, Pieza es true entonces...
         if (casilla.hayPieza()) {
             piezaActual = casilla.getPieza();
 
@@ -133,8 +165,10 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
 
             casilla.setDisplay(false);
 
+            //Los movimientos serán las posibilidades de la Pieza actual.
             movimientosPosibles = piezaActual.movimientosPosibles(this);
 
+            //Estableceremos el Color Azul por cada movimiento posible.
             movimientosPosibles.forEach(cas -> cas.setColor(Imagenes.COLOR_AZUL));
         }
 
@@ -170,19 +204,15 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
         repaint();
     }
 
-    private void finDelJuego() {
-        VentanaJuego.jaqueMate(piezaActual.esBlanca());
-    }
-
     @Override
     public void mouseDragged(MouseEvent e) {
+        //Le restamos 24 para que se centre donde el cursor.
         x = e.getX() - 24;
         y = e.getY() - 24;
 
         repaint();
     }
 
-    // Irrelevant methods, do nothing for these mouse behaviors
     @Override
     public void mouseMoved(MouseEvent e) {
     }
@@ -198,15 +228,4 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
     @Override
     public void mouseExited(MouseEvent e) {
     }
-
-    public Casilla getCasilla(int x, int y) {
-        // Limite inferior
-        if (x < 0 || y < 0) return null;
-
-        // Limite superior
-        if (x >= Tablero.LIMITE_HORIZONTAL || y >= Tablero.LIMITE_VERTICAL) return null;
-
-        return casillas[x][y];
-    }
-
 }

@@ -23,8 +23,6 @@ public class Reina extends Pieza {
         int x = casillaActual.getPosX();
         int y = casillaActual.getPosY();
 
-        Casilla casillaAComprobar;
-
         int resultado;
 
         // Movimiento horizontal
