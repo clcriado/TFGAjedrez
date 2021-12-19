@@ -1,7 +1,7 @@
 package utilidades;
 
 /**
- * Enumeracion Imagenes donde extraeremos las diferentes rutas de las imagenes de las Piezas.
+ * Enumeración Imágenes donde extraeremos las diferentes rutas de las imágenes de las Piezas.
  */
 
 public class Imagenes {

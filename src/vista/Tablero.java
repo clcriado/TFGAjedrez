@@ -73,7 +73,7 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
     }
 
     /**
-     * Método cargarTablero, nos permite vaciar y crear de nuevo el tablero con los datos actualizados.
+     * Método cargarTablero, nos permite vaciar y crear de nuevo el tablero con los datos cargados de la Instantanea.
      */
     public void cargarTablero(Tablero tablero) {
 
@@ -131,6 +131,8 @@ public class Tablero extends JPanel implements MouseListener, MouseMotionListene
 
     @Override
     public void paintComponent(Graphics g) {
+
+        //Con el Limite Horizontal y Vertical, pintamos las casillas.
         for (int x = 0; x < LIMITE_HORIZONTAL; x++) {
             for (int y = 0; y < LIMITE_VERTICAL; y++) {
                 casillas[x][y].paintComponent(g);
