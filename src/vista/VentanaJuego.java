@@ -3,13 +3,16 @@ package vista;
 import jugadores.Jugador;
 import jugadores.JugadorBlanco;
 import jugadores.JugadorNegro;
+import utilidades.Imagenes;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -132,7 +135,6 @@ public class VentanaJuego {
         JPanel panelDatos = new JPanel();
         panelDatos.setLayout(new GridLayout(3, 2, 0, 0));
 
-        //Nombre del Jugador
         JLabel labelNorte = new JLabel("AJEDREZ");
 
         labelNorte.setHorizontalAlignment(JLabel.CENTER);
@@ -182,7 +184,6 @@ public class VentanaJuego {
         JPanel panelBotones = new JPanel();
         panelBotones.setLayout(new GridLayout(1, 3, 10, 0));
 
-        //TODO Implementar la Instantanea de las Piezas
         final JButton buttonInstantanea = new JButton("Instantanea");
 
         buttonInstantanea.addActionListener(new ActionListener() {

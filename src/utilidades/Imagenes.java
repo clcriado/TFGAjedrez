@@ -5,6 +5,7 @@ package utilidades;
  */
 
 public class Imagenes {
+    public static final String UTILIDADES_IMAGEN_MENU = "/logoajedrez.png";
 
     public static final String UTILIDADES_ALFIL_BLANCO = "/balfil.png";
     public static final String UTILIDADES_ALFIL_NEGRO = "/nalfil.png";

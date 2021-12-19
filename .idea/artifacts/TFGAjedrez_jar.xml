@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TFGAjedrez:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TFGAjedrez_jar</output-path>
+    <root id="archive" name="TFGAjedrez.jar">
+      <element id="module-output" name="TFGAjedrez" />
+    </root>
+  </artifact>
+</component>

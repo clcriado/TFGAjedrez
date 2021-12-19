@@ -1,7 +1,13 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import utilidades.Imagenes;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 /**
@@ -22,8 +28,24 @@ public class MenuPrincipal implements Runnable {
         // Titulo del Juego
         final JPanel panelTitulo = new JPanel();
         boxComponentes.add(panelTitulo);
+
         final JLabel labelTitulo = new JLabel("Ajedrez");
         panelTitulo.add(labelTitulo);
+
+        BufferedImage bi;
+        try {
+            bi = ImageIO.read(Objects.requireNonNull(getClass().getResource(Imagenes.UTILIDADES_IMAGEN_MENU)));
+            ImageIcon ic = new ImageIcon(bi);
+            Image imagen = ic.getImage();
+            imagen = imagen.getScaledInstance(185, 120,  java.awt.Image.SCALE_SMOOTH);
+            ic = new ImageIcon(imagen);
+
+            JLabel imagenLabel = new JLabel(ic);
+            panelTitulo.add(imagenLabel);
+        } catch (IOException e) {
+            System.out.println("Fallo al carga la imagen del menú");
+        }
+
 
         // Nombre Jugador Negro
         final JPanel panelNegro = new JPanel();
@@ -33,8 +55,6 @@ public class MenuPrincipal implements Runnable {
         final JLabel labelTextoNegro = new JLabel("Nombre del Jugador Negro: ");
         final JTextField tfTextoNegro = new JTextField("Negro", 10);
 
-        //TODO anadir imagen
-        //panelNegro.add()
         panelNegro.add(labelTextoNegro);
         panelNegro.add(tfTextoNegro);
 
